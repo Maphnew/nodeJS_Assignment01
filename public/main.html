@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Main PAGE</title>
+</head>
+<body>
+    Email<input type="text" name = "email" class="email" id=""/>
+    <button class="ajaxsend"> Send </button>
+    <div class="result"></div>
+
+    <script src="main.js"></script>
+    <script>
+        document.querySelector(".ajaxsend").addEventListener("click", ()=>{
+            const inputdata = document.querySelector(".email").value;
+            sendAjax('http://localhost:3000/ajax_send_email', inputdata);
+        })
+
+        function sendAjax(url, inputdata){
+            let data = {'email':inputdata};
+            data = JSON.stringify(data);
+            console.log("data: " + data);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', url);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(data);
+
+            xhr.addEventListener('load', ()=>{
+                const result = JSON.parse(xhr.responseText);
+                console.log("result: " + JSON.stringify(result));
+                document.querySelector(".result").innerHTML = result.email;
+            })
+        }
+    </script>
+</body>
+</html>
